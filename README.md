@@ -17,7 +17,26 @@ It started as a spreadsheet, and now its an app. Read more [here](docs/ReadMe.md
 *   **100% Private:** No servers, no logins. All data persists locally in your browser (LocalStorage).
 *   **PWA Support:** Installable as a Progressive Web App on desktop and mobile.
 
-## Getting Started
+## Installing the App (PWA)
+
+This application is a Progressive Web App (PWA), which means you can install it on your device for an app-like experience (offline access, home screen icon, no browser chrome).
+
+### Desktop (Chrome / Edge)
+1.  Navigate to the site in your browser.
+2.  Look for the **Install icon** (a monitor with a down arrow) on the right side of the address bar.
+3.  Click it and select **Install**.
+
+### Mobile (Android - Chrome)
+1.  Navigate to the site in Chrome.
+2.  Tap the menu icon (three dots) in the top right.
+3.  Select **Add to Home screen** or **Install App**.
+
+### Mobile (iOS - Safari)
+1.  Navigate to the site in Safari.
+2.  Tap the **Share** button (square with an arrow pointing up) at the bottom.
+3.  Scroll down and select **Add to Home Screen**.
+
+## Getting Started (Development)
 
 ### Prerequisites
 
