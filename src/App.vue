@@ -7,6 +7,7 @@ import AboutView from './components/AboutView.vue'
 const currentView = ref<'spreadsheet' | 'settings' | 'about'>('spreadsheet')
 </script>
 
+
 <template>
   <div class="min-h-screen bg-gray-100 font-sans text-gray-900">
     <!-- Header -->
