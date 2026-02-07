@@ -7,9 +7,9 @@ const props = defineProps<{
   isOpen: boolean
 }>()
 
-// const emit = defineEmits<{
-//   (e: 'close'): void
-// }>()
+const emit = defineEmits<{
+  (e: 'close'): void
+}>()
 
 const store = useLeaveStore()
 

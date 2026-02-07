@@ -1,0 +1,130 @@
+{
+  "settings": {
+    "startBalance": 0,
+    "startDate": "2024-09-01",
+    "defaultAccrualRate": 12,
+    "projectionHorizon": 12,
+    "hoursPerDay": 7.6
+  },
+  "leaveEntries": [
+    {
+      "startDate": "2024-12-01",
+      "endDate": "2024-12-01",
+      "hoursTaken": 7.6,
+      "description": "Holiday 1",
+      "id": "beb6fe48-2fee-4aa3-8009-352244e1d78f"
+    },
+    {
+      "startDate": "2025-04-01",
+      "endDate": "2025-04-01",
+      "hoursTaken": 15.2,
+      "description": "Holiday 2",
+      "id": "84162257-11fe-4af7-9a59-d97c4bb038a7"
+    },
+    {
+      "startDate": "2025-08-01",
+      "endDate": "2025-08-01",
+      "hoursTaken": 30.4,
+      "description": "Holiday 3",
+      "id": "92d67d8d-ac9e-46c5-a1e6-b841e9f0814b"
+    },
+    {
+      "startDate": "2025-10-01",
+      "endDate": "2025-10-01",
+      "hoursTaken": 45.6,
+      "description": "Holiday 4",
+      "id": "8a96000f-4286-4547-9290-cfe156cbcd70"
+    },
+    {
+      "startDate": "2025-12-01",
+      "endDate": "2025-12-01",
+      "hoursTaken": 45.6,
+      "description": "Holiday 5",
+      "id": "72e4a214-92e5-4ea6-8815-2712b020470f"
+    },
+    {
+      "startDate": "2026-06-01",
+      "endDate": "2026-06-01",
+      "hoursTaken": 45.6,
+      "description": "Holiday 6",
+      "id": "79c66764-06eb-432a-8933-b4d6466c3270"
+    },
+    {
+      "startDate": "2026-07-01",
+      "endDate": "2026-07-01",
+      "hoursTaken": 45.6,
+      "description": "Holiday 7",
+      "id": "7de9c640-c525-41b8-90aa-44bc97291e78"
+    }
+  ],
+  "monthlyBalances": [
+    {
+      "month": "2024-09",
+      "accrual": 5
+    },
+    {
+      "month": "2024-10",
+      "accrual": 13.4
+    },
+    {
+      "month": "2024-11",
+      "accrual": 12.3
+    },
+    {
+      "month": "2024-12",
+      "accrual": 12.9
+    },
+    {
+      "month": "2025-01",
+      "accrual": 13.4
+    },
+    {
+      "month": "2025-02",
+      "accrual": 11.7
+    },
+    {
+      "month": "2025-03",
+      "accrual": 12.3
+    },
+    {
+      "month": "2025-04",
+      "accrual": 12.9
+    },
+    {
+      "month": "2025-05",
+      "accrual": 12.9
+    },
+    {
+      "month": "2025-06",
+      "accrual": 12.3
+    },
+    {
+      "month": "2025-07",
+      "accrual": 13.4
+    },
+    {
+      "month": "2025-08",
+      "accrual": 12.3
+    },
+    {
+      "month": "2025-09",
+      "accrual": 12.9
+    },
+    {
+      "month": "2025-10",
+      "accrual": 13.4
+    },
+    {
+      "month": "2025-11",
+      "accrual": 11.7
+    },
+    {
+      "month": "2025-12",
+      "accrual": 13.4
+    },
+    {
+      "month": "2026-01",
+      "accrual": 12.9
+    }
+  ]
+}
