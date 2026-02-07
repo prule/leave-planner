@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useLeaveStore } from '../stores/leaveStore'
+import { useLeaveStore, type LeavePlannerData } from '../stores/leaveStore'
 import { ref, watch } from 'vue'
 
 const store = useLeaveStore()
@@ -31,6 +31,50 @@ function exportData() {
   a.download = `leave-planner-backup-${new Date().toISOString().split('T')[0]}.json`
   a.click()
   URL.revokeObjectURL(url)
+}
+
+// --- Import Logic ---
+const fileInput = ref<HTMLInputElement | null>(null)
+
+function triggerImport() {
+  if (confirm('Importing a file will overwrite all current data. Are you sure you want to continue?')) {
+    fileInput.value?.click()
+  }
+}
+
+function handleFileImport(event: Event) {
+  const target = event.target as HTMLInputElement
+  const file = target.files?.[0]
+
+  if (!file) return
+
+  const reader = new FileReader()
+  reader.onload = (e) => {
+    try {
+      const text = e.target?.result
+      if (typeof text !== 'string') {
+        throw new Error('File content is not valid text.')
+      }
+      const data = JSON.parse(text) as LeavePlannerData
+
+      // Basic validation to ensure the data looks correct
+      if (data.settings && Array.isArray(data.leaveEntries) && Array.isArray(data.monthlyBalances)) {
+        store.importData(data)
+        alert('Data imported successfully!')
+      } else {
+        throw new Error('Invalid data structure in JSON file.')
+      }
+    } catch (error) {
+      console.error('Failed to import data:', error)
+      alert('Failed to import data. Please ensure you are using a valid JSON backup file.')
+    } finally {
+      // Reset the file input so the user can import the same file again if needed
+      if (target) {
+        target.value = ''
+      }
+    }
+  }
+  reader.readAsText(file)
 }
 </script>
 
@@ -98,13 +142,22 @@ function exportData() {
       </div>
 
       <div class="pt-4 flex justify-between items-center">
-        <button
-          type="button"
-          @click="exportData"
-          class="text-blue-600 hover:text-blue-800 text-sm font-medium"
-        >
-          Export Data
-        </button>
+        <div class="flex space-x-4">
+          <button
+            type="button"
+            @click="triggerImport"
+            class="text-blue-600 hover:text-blue-800 text-sm font-medium"
+          >
+            Import Data
+          </button>
+          <button
+            type="button"
+            @click="exportData"
+            class="text-blue-600 hover:text-blue-800 text-sm font-medium"
+          >
+            Export Data
+          </button>
+        </div>
 
         <button
           type="submit"
@@ -114,5 +167,14 @@ function exportData() {
         </button>
       </div>
     </form>
+
+    <!-- Hidden file input for the import -->
+    <input
+      type="file"
+      ref="fileInput"
+      @change="handleFileImport"
+      class="hidden"
+      accept=".json"
+    >
   </div>
 </template>

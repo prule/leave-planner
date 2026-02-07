@@ -24,6 +24,13 @@ export interface MonthlyBalance {
   notes?: string
 }
 
+// Define a type for the entire store's data for import/export
+export type LeavePlannerData = {
+  settings: Settings;
+  leaveEntries: LeaveEntry[];
+  monthlyBalances: MonthlyBalance[];
+}
+
 export const useLeaveStore = defineStore('leave', () => {
   // Default State
   const defaultSettings: Settings = {
@@ -61,17 +68,12 @@ export const useLeaveStore = defineStore('leave', () => {
     const index = monthlyBalances.value.findIndex(b => b.month === balance.month)
     
     if (index !== -1) {
-      // Merge existing with new
       const existing = monthlyBalances.value[index]
       const updated = { ...existing, ...balance }
       
-      // Clean up undefined/null values if we want to keep the object clean, 
-      // but keeping them as null is fine for our logic (null = explicit "no override")
-      // However, if we want to truly "unset", we can check:
       if (balance.accrual === undefined && existing.accrual !== undefined) updated.accrual = existing.accrual
       if (balance.balance === undefined && existing.balance !== undefined) updated.balance = existing.balance
       
-      // Use splice to ensure reactivity triggers
       monthlyBalances.value.splice(index, 1, updated)
     } else {
       monthlyBalances.value.push(balance)
@@ -82,6 +84,14 @@ export const useLeaveStore = defineStore('leave', () => {
     settings.value = newSettings
   }
 
+  function importData(data: LeavePlannerData) {
+    // Replace the current state with the imported data
+    // Merge with defaults to ensure any new settings fields are present
+    settings.value = { ...defaultSettings, ...data.settings }
+    leaveEntries.value = data.leaveEntries || []
+    monthlyBalances.value = data.monthlyBalances || []
+  }
+
   // Persistence
   const STORAGE_KEY = 'leave-planner-data'
 
@@ -90,7 +100,6 @@ export const useLeaveStore = defineStore('leave', () => {
     if (stored) {
       try {
         const data = JSON.parse(stored)
-        // Merge loaded settings with defaults to ensure all fields exist
         if (data.settings) {
           settings.value = { ...defaultSettings, ...data.settings }
         }
@@ -121,6 +130,7 @@ export const useLeaveStore = defineStore('leave', () => {
     updateLeaveEntry,
     deleteLeaveEntry,
     setMonthlyBalance,
-    updateSettings
+    updateSettings,
+    importData // Expose the new action
   }
 })
