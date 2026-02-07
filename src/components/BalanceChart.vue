@@ -80,7 +80,7 @@ const chartOptions = {
         return rowData && rowData.leaveDescriptions.length > 0
       },
       // Format the label content
-      formatter: (value: any, context: any) => {
+      formatter: (_value: any, context: any) => {
         const rowIndex = context.dataIndex
         const rowData = rows.value[rowIndex]
         return rowData.leaveDescriptions.join(', ')

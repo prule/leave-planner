@@ -2,7 +2,6 @@
 import { ref, onMounted, nextTick } from 'vue'
 import { useLeaveStore } from '../stores/leaveStore'
 import { useLeaveCalculations } from '../composables/useLeaveCalculations'
-import LeaveModal from './LeaveModal.vue'
 import BalanceChart from './BalanceChart.vue'
 
 const store = useLeaveStore()
