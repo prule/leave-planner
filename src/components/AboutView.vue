@@ -42,6 +42,26 @@
         </li>
       </ul>
 
+      <h3 class="text-lg font-semibold text-gray-800 mt-6">Install as an App</h3>
+      <p>
+        You can install Leave Planner on your device for quick access, just like a native app.
+      </p>
+
+      <div class="mt-4 space-y-4">
+        <div>
+            <h4 class="font-medium text-gray-800">Desktop (Chrome / Edge)</h4>
+            <p class="text-sm">Click the install icon in the address bar (usually on the right side) and select <strong>Install</strong>.</p>
+        </div>
+        <div>
+            <h4 class="font-medium text-gray-800">iOS (Safari)</h4>
+            <p class="text-sm">Tap the <strong>Share</strong> button, scroll down, and tap <strong>Add to Home Screen</strong>.</p>
+        </div>
+        <div>
+            <h4 class="font-medium text-gray-800">Android (Chrome)</h4>
+            <p class="text-sm">Tap the menu icon (three dots), then select <strong>Install App</strong> or <strong>Add to Home Screen</strong>.</p>
+        </div>
+      </div>
+
       <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mt-8">
         <div class="flex">
           <div class="flex-shrink-0">
