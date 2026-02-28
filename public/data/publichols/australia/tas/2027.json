@@ -1,0 +1,17 @@
+[
+  { "date": "2027-01-01", "name": "New Year's Day" },
+  { "date": "2027-01-26", "name": "Australia Day" },
+  { "date": "2027-02-08", "name": "Royal Hobart Regatta" },
+  { "date": "2027-03-08", "name": "Eight Hours Day" },
+  { "date": "2027-03-26", "name": "Good Friday" },
+  { "date": "2027-03-29", "name": "Easter Monday" },
+  { "date": "2027-03-30", "name": "Easter Tuesday" },
+  { "date": "2027-04-25", "name": "Anzac Day" },
+  { "date": "2027-04-26", "name": "Anzac Day Holiday" },
+  { "date": "2027-06-14", "name": "King's Birthday" },
+  { "date": "2027-11-01", "name": "Recreation Day" },
+  { "date": "2027-12-25", "name": "Christmas Day" },
+  { "date": "2027-12-26", "name": "Boxing Day" },
+  { "date": "2027-12-27", "name": "Christmas Day Holiday" },
+  { "date": "2027-12-28", "name": "Boxing Day Holiday" }
+]
