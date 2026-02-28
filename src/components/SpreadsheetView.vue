@@ -3,6 +3,7 @@ import { ref, onMounted, nextTick, computed } from 'vue'
 import { useLeaveStore } from '../stores/leaveStore'
 import { useLeaveCalculations, type CalculatedRow } from '../composables/useLeaveCalculations'
 import LeaveModal from './LeaveModal.vue'
+import WfhModal from './WfhModal.vue'
 import BalanceChart from './BalanceChart.vue'
 
 const store = useLeaveStore()
@@ -10,11 +11,12 @@ const { rows } = useLeaveCalculations()
 
 // --- Financial Year Logic ---
 const rowsWithTotals = computed(() => {
-  const result: (CalculatedRow | { isTotal: true, year: string, totalAccrued: number, totalTaken: number })[] = []
+  const result: (CalculatedRow | { isTotal: true, year: string, totalAccrued: number, totalTaken: number, totalWfh: number })[] = []
   if (rows.value.length === 0) return []
 
   let fyAccrued = 0
   let fyTaken = 0
+  let fyWfh = 0
 
   const startMonth = store.settings.financialYearStartMonth || 7
 
@@ -26,6 +28,7 @@ const rowsWithTotals = computed(() => {
 
     fyAccrued += row.accrued
     fyTaken += row.taken
+    fyWfh += row.wfhDays
 
     // Check if this is the last month of the financial year
     const isEndOfFy = month === (startMonth === 1 ? 12 : startMonth - 1)
@@ -37,11 +40,13 @@ const rowsWithTotals = computed(() => {
         isTotal: true,
         year: `FY ${fyStartYear}/${String(fyEndYear).slice(2)}`,
         totalAccrued: fyAccrued,
-        totalTaken: fyTaken
+        totalTaken: fyTaken,
+        totalWfh: fyWfh
       })
       // Reset for next year
       fyAccrued = 0
       fyTaken = 0
+      fyWfh = 0
     }
   })
 
@@ -74,10 +79,17 @@ function isPast(monthKey: string) {
 
 // Modal State
 const isModalOpen = ref(false)
+const isWfhModalOpen = ref(false)
 const selectedMonthKey = ref('')
+
 function openLeaveModal(monthKey: string) {
   selectedMonthKey.value = monthKey
   isModalOpen.value = true
+}
+
+function openWfhModal(monthKey: string) {
+  selectedMonthKey.value = monthKey
+  isWfhModalOpen.value = true
 }
 
 // Scrolling
@@ -115,6 +127,7 @@ onMounted(() => {
               <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Taken</th>
               <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Closing (Hrs)</th>
               <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Days</th>
+              <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">WFH Days</th>
               <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Notes</th>
             </tr>
           </thead>
@@ -126,7 +139,9 @@ onMounted(() => {
                 <td class="px-6 py-3"></td> <!-- Empty cell for Opening -->
                 <td class="px-6 py-3 text-right text-sm text-blue-900">{{ formatNumber(row.totalAccrued) }}</td>
                 <td class="px-6 py-3 text-right text-sm text-blue-900">{{ formatNumber(row.totalTaken) }}</td>
-                <td colspan="3" class="px-6 py-3"></td> <!-- Empty cells for Closing, Days, Notes -->
+                <td colspan="2" class="px-6 py-3"></td> <!-- Empty cells for Closing, Days -->
+                <td class="px-6 py-3 text-right text-sm text-blue-900">{{ row.totalWfh }}</td>
+                <td class="px-6 py-3"></td> <!-- Empty cell for Notes -->
               </tr>
               <!-- Regular Month Row -->
               <tr
@@ -156,6 +171,9 @@ onMounted(() => {
                   >
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-right font-medium">{{ formatNumber(row.closingDays) }}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-right">
+                  <button @click="openWfhModal(row.monthKey)" class="hover:text-blue-600 hover:underline">{{ row.wfhDays }}</button>
+                </td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                   <input
                     :value="row.notes"
@@ -170,6 +188,7 @@ onMounted(() => {
       </div>
 
       <LeaveModal v-if="isModalOpen" :is-open="isModalOpen" :month-key="selectedMonthKey" @close="isModalOpen = false" />
+      <WfhModal v-if="isWfhModalOpen" :is-open="isWfhModalOpen" :month-key="selectedMonthKey" @close="isWfhModalOpen = false" />
     </div>
   </div>
 </template>

@@ -30,6 +30,7 @@ export type LeavePlannerData = {
   settings: Settings;
   leaveEntries: LeaveEntry[];
   monthlyBalances: MonthlyBalance[];
+  wfhDates: string[]; // YYYY-MM-DD
 }
 
 export const useLeaveStore = defineStore('leave', () => {
@@ -46,6 +47,7 @@ export const useLeaveStore = defineStore('leave', () => {
   const settings = ref<Settings>({ ...defaultSettings })
   const leaveEntries = ref<LeaveEntry[]>([])
   const monthlyBalances = ref<MonthlyBalance[]>([])
+  const wfhDates = ref<string[]>([]) // Array of YYYY-MM-DD strings
 
   // Actions
   function addLeaveEntry(entry: Omit<LeaveEntry, 'id'>) {
@@ -82,6 +84,15 @@ export const useLeaveStore = defineStore('leave', () => {
     }
   }
 
+  function toggleWfhDate(date: string) {
+    const index = wfhDates.value.indexOf(date)
+    if (index === -1) {
+      wfhDates.value.push(date)
+    } else {
+      wfhDates.value.splice(index, 1)
+    }
+  }
+
   function updateSettings(newSettings: Settings) {
     settings.value = newSettings
   }
@@ -92,6 +103,7 @@ export const useLeaveStore = defineStore('leave', () => {
     settings.value = { ...defaultSettings, ...data.settings }
     leaveEntries.value = data.leaveEntries || []
     monthlyBalances.value = data.monthlyBalances || []
+    wfhDates.value = data.wfhDates || []
   }
 
   // Persistence
@@ -107,17 +119,19 @@ export const useLeaveStore = defineStore('leave', () => {
         }
         if (data.leaveEntries) leaveEntries.value = data.leaveEntries
         if (data.monthlyBalances) monthlyBalances.value = data.monthlyBalances
+        if (data.wfhDates) wfhDates.value = data.wfhDates
       } catch (e) {
         console.error('Failed to load data from local storage', e)
       }
     }
   }
 
-  watch([settings, leaveEntries, monthlyBalances], () => {
+  watch([settings, leaveEntries, monthlyBalances, wfhDates], () => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify({
       settings: settings.value,
       leaveEntries: leaveEntries.value,
-      monthlyBalances: monthlyBalances.value
+      monthlyBalances: monthlyBalances.value,
+      wfhDates: wfhDates.value
     }))
   }, { deep: true })
 
@@ -128,10 +142,12 @@ export const useLeaveStore = defineStore('leave', () => {
     settings,
     leaveEntries,
     monthlyBalances,
+    wfhDates,
     addLeaveEntry,
     updateLeaveEntry,
     deleteLeaveEntry,
     setMonthlyBalance,
+    toggleWfhDate,
     updateSettings,
     importData // Expose the new action
   }

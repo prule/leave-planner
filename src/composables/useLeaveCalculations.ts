@@ -9,10 +9,11 @@ export interface CalculatedRow {
   taken: number
   closingBalance: number
   closingDays: number
-  leaveDescriptions: string[] // New field
+  leaveDescriptions: string[]
   isAccrualOverridden: boolean
   isBalanceOverridden: boolean
   notes: string
+  wfhDays: number // New field
 }
 
 export function useLeaveCalculations() {
@@ -80,6 +81,9 @@ export function useLeaveCalculations() {
 
       const closingDays = closingBalance / hoursPerDay
 
+      // Calculate WFH days for this month
+      const wfhDays = store.wfhDates.filter(date => date.startsWith(monthKey)).length
+
       result.push({
         monthKey,
         displayMonth: formatMonthDisplay(monthKey),
@@ -91,7 +95,8 @@ export function useLeaveCalculations() {
         leaveDescriptions,
         isAccrualOverridden,
         isBalanceOverridden,
-        notes: storedMonth?.notes || ''
+        notes: storedMonth?.notes || '',
+        wfhDays
       })
 
       // Increment month
