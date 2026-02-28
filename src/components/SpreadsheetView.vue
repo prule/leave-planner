@@ -20,7 +20,7 @@ const rowsWithTotals = computed(() => {
 
   const startMonth = store.settings.financialYearStartMonth || 7
 
-  rows.value.forEach((row, index) => {
+  rows.value.forEach((row) => {
     const [year, month] = row.monthKey.split('-').map(Number)
 
     // Add the current row

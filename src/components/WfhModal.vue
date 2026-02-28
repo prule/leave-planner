@@ -8,10 +8,6 @@ const props = defineProps<{
   isOpen: boolean
 }>()
 
-const emit = defineEmits<{
-  (e: 'close'): void
-}>()
-
 const store = useLeaveStore()
 const { holidays, fetchHolidaysForYear, isLoading } = usePublicHolidays()
 
