@@ -10,3 +10,4 @@ app.use(pinia)
 app.mount('#app')
 
 //
+console.log("Leave Planner")
