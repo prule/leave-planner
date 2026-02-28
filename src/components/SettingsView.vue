@@ -76,6 +76,21 @@ function handleFileImport(event: Event) {
   }
   reader.readAsText(file)
 }
+
+const months = [
+  { value: 1, name: 'January' },
+  { value: 2, name: 'February' },
+  { value: 3, name: 'March' },
+  { value: 4, name: 'April' },
+  { value: 5, name: 'May' },
+  { value: 6, name: 'June' },
+  { value: 7, name: 'July' },
+  { value: 8, name: 'August' },
+  { value: 9, name: 'September' },
+  { value: 10, name: 'October' },
+  { value: 11, name: 'November' },
+  { value: 12, name: 'December' }
+]
 </script>
 
 <template>
@@ -139,6 +154,20 @@ function handleFileImport(event: Event) {
           required
         >
         <p class="text-xs text-gray-500 mt-1">How many months into the future to calculate?</p>
+      </div>
+
+      <div>
+        <label for="financial-year-start" class="block text-sm font-medium text-gray-700">Financial Year Start</label>
+        <select
+          id="financial-year-start"
+          v-model.number="form.financialYearStartMonth"
+          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm border p-2"
+        >
+          <option v-for="month in months" :key="month.value" :value="month.value">
+            {{ month.name }}
+          </option>
+        </select>
+        <p class="text-xs text-gray-500 mt-1">The month your financial year begins. Used for calculating annual totals.</p>
       </div>
 
       <div class="pt-4 flex justify-between items-center">

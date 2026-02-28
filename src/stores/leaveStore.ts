@@ -7,6 +7,7 @@ export interface Settings {
   defaultAccrualRate: number
   projectionHorizon: number
   hoursPerDay: number
+  financialYearStartMonth: number // 1 for Jan, 12 for Dec
 }
 
 export interface LeaveEntry {
@@ -38,7 +39,8 @@ export const useLeaveStore = defineStore('leave', () => {
     startDate: new Date().toISOString().split('T')[0],
     defaultAccrualRate: 10,
     projectionHorizon: 12,
-    hoursPerDay: 7.6 // Default standard working day
+    hoursPerDay: 7.6, // Default standard working day
+    financialYearStartMonth: 7 // Default to July
   }
 
   const settings = ref<Settings>({ ...defaultSettings })
