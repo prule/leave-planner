@@ -3,6 +3,7 @@ import { ref } from 'vue'
 import SettingsView from './components/SettingsView.vue'
 import SpreadsheetView from './components/SpreadsheetView.vue'
 import AboutView from './components/AboutView.vue'
+import ReloadPrompt from './components/ReloadPrompt.vue'
 
 const currentView = ref<'spreadsheet' | 'settings' | 'about'>('spreadsheet')
 </script>
@@ -70,5 +71,8 @@ const currentView = ref<'spreadsheet' | 'settings' | 'about'>('spreadsheet')
         <AboutView />
       </div>
     </main>
+
+    <!-- PWA Reload Prompt -->
+    <ReloadPrompt />
   </div>
 </template>
