@@ -6,6 +6,7 @@ import LeaveModal from './LeaveModal.vue'
 import WfhModal from './WfhModal.vue'
 import BalanceChart from './BalanceChart.vue'
 
+
 const store = useLeaveStore()
 const { rows } = useLeaveCalculations()
 

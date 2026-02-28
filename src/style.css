@@ -1,1 +1,18 @@
 @import "tailwindcss";
+
+@theme {
+    /* Single Color: usable as bg-brand, text-brand, etc. */
+    --color-brand: #3b82f6;
+
+    /* Color Palette: usable as bg-accent-500, border-accent-100 */
+    --color-accent-100: #f1f5f9;
+    --color-accent-500: #64748b;
+    --color-accent-900: #0f172a;
+
+    /* Custom Spacing (Optional) */
+    --spacing-128: 32rem;
+
+    --color-border: var(--color-gray-200);
+
+    --color-white: #ffffff;
+}

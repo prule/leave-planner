@@ -100,11 +100,11 @@ watchEffect(() => {
     <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
 
       <!-- Background overlay -->
-      <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true" @click="$emit('close')"></div>
+      <div class="fixed inset-0 bg-gray-500/75 transition-opacity" aria-hidden="true" @click="$emit('close')"></div>
 
       <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
 
-      <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+      <div class="relative inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
         <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
           <div class="sm:flex sm:items-start">
             <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
@@ -115,7 +115,7 @@ watchEffect(() => {
               <!-- List of existing entries -->
               <div class="mt-4 mb-6">
                 <h4 class="text-sm font-medium text-gray-500 uppercase tracking-wider mb-2">Entries</h4>
-                <ul class="divide-y divide-gray-200 border rounded-md">
+                <ul class="divide-y divide-gray-200 border border-gray-200 rounded-md">
                   <li v-for="entry in monthEntries" :key="entry.id" class="p-3 flex justify-between items-center hover:bg-gray-50">
                     <div>
                       <p class="text-sm font-medium text-gray-900">{{ entry.description }}</p>
@@ -133,7 +133,7 @@ watchEffect(() => {
               </div>
 
               <!-- Add/Edit Form -->
-              <div class="bg-gray-50 p-4 rounded-md border">
+              <div class="bg-gray-50 p-4 rounded-md border border-gray-200">
                 <h4 class="text-sm font-medium text-gray-900 mb-3">{{ isEditing ? 'Edit Entry' : 'Add New Entry' }}</h4>
                 <form @submit.prevent="saveEntry" class="space-y-3">
                   <div>
