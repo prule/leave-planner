@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, watchEffect } from 'vue'
 import { useLeaveStore } from '../stores/leaveStore'
+import { usePublicHolidays } from '../composables/usePublicHolidays'
 
 const props = defineProps<{
   monthKey: string // YYYY-MM
@@ -12,6 +13,15 @@ const emit = defineEmits<{
 }>()
 
 const store = useLeaveStore()
+const { holidays, fetchHolidaysForYear, isLoading } = usePublicHolidays()
+
+// Fetch holidays when month changes or modal opens
+watchEffect(() => {
+  if (props.isOpen && props.monthKey) {
+    const [year] = props.monthKey.split('-').map(Number)
+    fetchHolidaysForYear(year)
+  }
+})
 
 // Generate days for the month
 const daysInMonth = computed(() => {
@@ -36,7 +46,12 @@ function isWfh(date: string) {
   return store.wfhDates.includes(date)
 }
 
+function getPublicHoliday(date: string) {
+  return holidays.value.find((h: any) => h.date === date)
+}
+
 function toggleDay(date: string) {
+  if (getPublicHoliday(date)) return // Prevent toggling on public holidays
   store.toggleWfhDate(date)
 }
 
@@ -67,6 +82,8 @@ const startOffset = computed(() => {
                 Work From Home Days - {{ monthKey }}
               </h3>
 
+              <div v-if="isLoading" class="text-sm text-gray-500 mb-2">Loading public holidays...</div>
+
               <div class="grid grid-cols-7 gap-1 mb-2">
                 <div v-for="day in weekDays" :key="day" class="text-center text-xs font-medium text-gray-500 py-1">
                   {{ day }}
@@ -82,18 +99,28 @@ const startOffset = computed(() => {
                   v-for="day in daysInMonth"
                   :key="day.date"
                   @click="toggleDay(day.date)"
+                  :disabled="!!getPublicHoliday(day.date)"
+                  :title="getPublicHoliday(day.date)?.name"
                   :class="[
-                    'p-2 rounded-md text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500',
+                    'p-2 rounded-md text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 relative',
+                    getPublicHoliday(day.date) ? 'bg-red-100 text-red-800 cursor-not-allowed border border-red-200' :
                     isWfh(day.date) ? 'bg-blue-600 text-white hover:bg-blue-700' : 'bg-gray-100 text-gray-900 hover:bg-gray-200',
                     day.isWeekend ? 'opacity-50' : ''
                   ]"
                 >
                   {{ day.dayOfMonth }}
+                  <!-- Holiday Indicator Dot -->
+                  <span v-if="getPublicHoliday(day.date)" class="absolute top-0 right-0 -mt-1 -mr-1 flex h-3 w-3">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
+                  </span>
                 </button>
               </div>
 
               <p class="text-xs text-gray-500 mt-4">
-                Click on a day to toggle "Work From Home" status. Weekends are shown dimmed.
+                Click on a day to toggle "Work From Home" status. <br>
+                <span class="inline-block w-3 h-3 bg-red-100 border border-red-200 rounded-sm mr-1 align-middle"></span> Public Holidays are disabled.
+                <span class="inline-block w-3 h-3 bg-gray-100 rounded-sm mr-1 ml-2 align-middle opacity-50"></span> Weekends are dimmed.
               </p>
 
             </div>

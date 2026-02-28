@@ -170,6 +170,21 @@ const months = [
         <p class="text-xs text-gray-500 mt-1">The month your financial year begins. Used for calculating annual totals.</p>
       </div>
 
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Public Holiday Data URL Template</label>
+        <input
+          v-model="form.publicHolidayUrlTemplate"
+          type="text"
+          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm border p-2"
+          placeholder="https://example.com/holidays/{year}.json"
+        >
+        <p class="text-xs text-gray-500 mt-1">
+          URL to fetch public holiday data. Use <code>{year}</code> as a placeholder.
+          <br>
+          Expected format: JSON array of objects with a <code>date</code> field (YYYY-MM-DD).
+        </p>
+      </div>
+
       <div class="pt-4 flex justify-between items-center">
         <div class="flex space-x-4">
           <button
