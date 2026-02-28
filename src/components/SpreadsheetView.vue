@@ -34,7 +34,8 @@ const rowsWithTotals = computed(() => {
     const isEndOfFy = month === (startMonth === 1 ? 12 : startMonth - 1)
 
     if (isEndOfFy) {
-      const fyEndYear = month >= startMonth ? year : year + 1
+      // Since we are at the end of the financial year, the current year IS the end year.
+      const fyEndYear = year
       const fyStartYear = fyEndYear - 1
       result.push({
         isTotal: true,
