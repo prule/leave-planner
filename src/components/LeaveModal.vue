@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, watchEffect } from 'vue'
 import { useLeaveStore, type LeaveEntry } from '../stores/leaveStore'
 
 const props = defineProps<{
@@ -16,6 +16,18 @@ const store = useLeaveStore()
 // Filter leave entries for this month
 const monthEntries = computed(() => {
   return store.leaveEntries.filter(entry => entry.startDate.startsWith(props.monthKey))
+})
+
+// Calculate min and max dates for the date picker
+const minDate = computed(() => {
+  return `${props.monthKey}-01`
+})
+
+const maxDate = computed(() => {
+  const [year, month] = props.monthKey.split('-').map(Number)
+  // Get the last day of the month: day 0 of the next month
+  const lastDay = new Date(year, month, 0).getDate()
+  return `${props.monthKey}-${String(lastDay).padStart(2, '0')}`
 })
 
 // Form state for new/editing entry
@@ -75,10 +87,6 @@ function deleteEntry(id: string) {
 }
 
 // Initialize form when modal opens
-// We can't easily watch props.isOpen here because the component might not be mounted yet or stays mounted.
-// Instead, we'll rely on the parent to mount/unmount or use v-if.
-// Let's assume the parent uses v-if, so onMounted works, or we watch props.monthKey.
-import { watchEffect } from 'vue'
 watchEffect(() => {
   if (props.isOpen && !isEditing.value) {
     resetForm()
@@ -135,7 +143,14 @@ watchEffect(() => {
                   <div class="grid grid-cols-2 gap-4">
                     <div>
                       <label class="block text-xs font-medium text-gray-700">Start Date</label>
-                      <input v-model="form.startDate" type="date" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm border p-2">
+                      <input
+                        v-model="form.startDate"
+                        type="date"
+                        :min="minDate"
+                        :max="maxDate"
+                        required
+                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm border p-2"
+                      >
                     </div>
                     <div>
                       <label class="block text-xs font-medium text-gray-700">Hours Taken</label>
