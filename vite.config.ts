@@ -32,7 +32,8 @@ export default defineConfig({
       workbox: {
         globPatterns: ['**/*.{js,css,html,ico,png,svg,json}'], // Ensure JSON data files are cached too
         // Optional: clear out older service worker versions from the cache
-        cleanupOutdatedCaches: true
+        cleanupOutdatedCaches: true,
+        dontCacheBustURLsMatching: /^assets\//,
       }
     })
   ],
