@@ -12,7 +12,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Implemented automatic reloading for the PWA when a new version is available.
 - Added Work From Home day tracking
+- Configurable Financial Year start month
 - Added financial year totals
+- Added public holidays datasource for showing on WFH selector
+- Show beginning of year on chart
+- Updated About page
 
 ### Changed
 - Upgraded project dependencies.
