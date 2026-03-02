@@ -10,4 +10,4 @@ app.use(pinia)
 app.mount('#app')
 
 //
-console.log("Leave Planner 0.0.3")
+console.log("Leave Planner 1.1.0")
