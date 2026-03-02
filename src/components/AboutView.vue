@@ -56,27 +56,7 @@
           <strong>Select Dates:</strong> Simply click on the days you worked from home to toggle them on or off.
         </li>
         <li>
-          <strong>Public Holidays:</strong> You can configure a datasource for public holiday data so the calendar will automatically fetch public holiday data.
-          Public holidays are highlighted in red and cannot be selected as WFH days. Set a template like
-          https://raw.githubusercontent.com/prule/leave-planner/main/data/publichols/australia/nsw/{year}.json.
-          Always check your data source is correct.
-          A public holiday datasource should look like:
-          <pre>
-          [
-            { "date": "2025-01-01", "name": "New Year's Day" },
-            { "date": "2025-01-27", "name": "Australia Day" },
-            { "date": "2025-04-18", "name": "Good Friday" },
-            { "date": "2025-04-19", "name": "Easter Saturday" },
-            { "date": "2025-04-20", "name": "Easter Sunday" },
-            { "date": "2025-04-21", "name": "Easter Monday" },
-            { "date": "2025-04-25", "name": "Anzac Day" },
-            { "date": "2025-06-09", "name": "King's Birthday" },
-            { "date": "2025-10-06", "name": "Labour Day" },
-            { "date": "2025-12-25", "name": "Christmas Day" },
-            { "date": "2025-12-26", "name": "Boxing Day" }
-          ]
-</pre>
-
+          <strong>Public Holidays:</strong> In the Settings page, you can select your country to automatically fetch public holiday data from Nager.Date. Public holidays are highlighted in red and cannot be selected as WFH days. If your country has regional holidays, a county/state selector will appear.
         </li>
         <li>
           <strong>Financial Year Summary:</strong> At the end of each financial year (e.g., June), a summary row will show the total number of WFH days for that year.
