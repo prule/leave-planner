@@ -8,12 +8,12 @@ const store = useLeaveStore()
 const form = ref({ ...store.settings })
 
 // Country data
-const countries = ref([])
-const counties = ref([])
+const countries = ref<{ countryCode: string; name: string }[]>([])
+const counties = ref<{ countyCode: string; name: string }[]>([])
 const loadingCountries = ref(false)
 const loadingCounties = ref(false)
-const countryError = ref(null)
-const countyError = ref(null)
+const countryError = ref<string | null>(null)
+const countyError = ref<string | null>(null)
 
 async function fetchCountries() {
   loadingCountries.value = true
@@ -128,7 +128,7 @@ function handleFileImport(event: Event) {
       if (typeof text !== 'string') {
         throw new Error('File content is not valid text.')
       }
-      const data = JSON.parse(text) as LeavePlannerAta
+      const data = JSON.parse(text) as LeavePlannerData
 
       // Basic validation to ensure the data looks correct
       if (data.settings && Array.isArray(data.leaveEntries) && Array.isArray(data.monthlyBalances)) {
