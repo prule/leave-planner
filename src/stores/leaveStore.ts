@@ -9,6 +9,8 @@ export interface Settings {
   hoursPerDay: number
   financialYearStartMonth: number // 1 for Jan, 12 for Dec
   publicHolidayUrlTemplate: string // URL with {year} placeholder
+  holidayCountry: string
+  holidayCounty: string
 }
 
 export interface LeaveEntry {
@@ -43,7 +45,9 @@ export const useLeaveStore = defineStore('leave', () => {
     projectionHorizon: 12,
     hoursPerDay: 7.6, // Default standard working day
     financialYearStartMonth: 7, // Default to July
-    publicHolidayUrlTemplate: 'https://raw.githubusercontent.com/prule/leave-planner/main/data/publichols/australia/nsw/{year}.json'
+    publicHolidayUrlTemplate: 'https://raw.githubusercontent.com/prule/leave-planner/main/data/publichols/australia/nsw/{year}.json',
+    holidayCountry: '',
+    holidayCounty: ''
   }
 
   const settings = ref<Settings>({ ...defaultSettings })

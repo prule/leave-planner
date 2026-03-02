@@ -1,11 +1,84 @@
 <script setup lang="ts">
 import { useLeaveStore, type LeavePlannerData } from '../stores/leaveStore'
-import { ref, watch } from 'vue'
+import { ref, watch, onMounted } from 'vue'
 
 const store = useLeaveStore()
 
 // Local state for form to avoid direct mutation/reactivity issues during editing
 const form = ref({ ...store.settings })
+
+// Country data
+const countries = ref([])
+const counties = ref([])
+const loadingCountries = ref(false)
+const loadingCounties = ref(false)
+const countryError = ref(null)
+const countyError = ref(null)
+
+async function fetchCountries() {
+  loadingCountries.value = true
+  countryError.value = null
+  try {
+    const response = await fetch('https://date.nager.at/api/v3/AvailableCountries')
+    if (!response.ok) {
+      throw new Error(`Failed to fetch countries: ${response.statusText}`)
+    }
+    countries.value = await response.json()
+  } catch (error: any) {
+    countryError.value = error.message
+    console.error(error)
+  } finally {
+    loadingCountries.value = false
+  }
+}
+
+async function fetchCounties(countryCode: string) {
+  loadingCounties.value = true
+  countyError.value = null
+  counties.value = [] // Clear previous counties
+  try {
+    const year = new Date().getFullYear()
+    const response = await fetch(`https://date.nager.at/api/v3/PublicHolidays/${year}/${countryCode}`)
+
+    if (!response.ok) {
+       throw new Error(`Failed to fetch holidays: ${response.statusText}`)
+    }
+
+    const holidays = await response.json()
+
+    // Extract unique counties
+    const countySet = new Set<string>()
+    if (Array.isArray(holidays)) {
+      holidays.forEach((h: any) => {
+        if (Array.isArray(h.counties)) {
+          h.counties.forEach((c: string) => countySet.add(c))
+        }
+      })
+    }
+
+    // Convert to array for dropdown
+    // We don't have names, so we use the code as the name
+    counties.value = Array.from(countySet).sort().map(c => ({
+      countyCode: c,
+      name: c
+    }))
+
+  } catch (error: any) {
+    countyError.value = error.message
+    console.error(error)
+  } finally {
+    loadingCounties.value = false
+  }
+}
+
+// Watch for country changes to load counties
+watch(() => form.value.holidayCountry, (newCountry) => {
+  if (newCountry) {
+    fetchCounties(newCountry)
+  } else {
+    counties.value = [] // Clear counties if no country is selected
+  }
+})
 
 // Watch for store changes (in case updated elsewhere)
 watch(() => store.settings, (newSettings) => {
@@ -55,7 +128,7 @@ function handleFileImport(event: Event) {
       if (typeof text !== 'string') {
         throw new Error('File content is not valid text.')
       }
-      const data = JSON.parse(text) as LeavePlannerData
+      const data = JSON.parse(text) as LeavePlannerAta
 
       // Basic validation to ensure the data looks correct
       if (data.settings && Array.isArray(data.leaveEntries) && Array.isArray(data.monthlyBalances)) {
@@ -91,6 +164,13 @@ const months = [
   { value: 11, name: 'November' },
   { value: 12, name: 'December' }
 ]
+
+onMounted(() => {
+  fetchCountries()
+  if (form.value.holidayCountry) {
+    fetchCounties(form.value.holidayCountry)
+  }
+})
 </script>
 
 <template>
@@ -171,18 +251,35 @@ const months = [
       </div>
 
       <div>
-        <label class="block text-sm font-medium text-gray-700">Public Holiday Data URL Template</label>
-        <input
-          v-model="form.publicHolidayUrlTemplate"
-          type="text"
+        <label for="holiday-country" class="block text-sm font-medium text-gray-700">Holiday Country</label>
+        <select
+          id="holiday-country"
+          v-model="form.holidayCountry"
           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm border p-2"
-          placeholder="https://example.com/holidays/{year}.json"
         >
-        <p class="text-xs text-gray-500 mt-1">
-          URL to fetch public holiday data. Use <code>{year}</code> as a placeholder.
-          <br>
-          Expected format: JSON array of objects with a <code>date</code> field (YYYY-MM-DD).
-        </p>
+          <option value="">Select a country</option>
+          <option v-for="country in countries" :key="country.countryCode" :value="country.countryCode">
+            {{ country.name }}
+          </option>
+        </select>
+        <p v-if="countryError" class="text-red-500 text-sm mt-1">{{ countryError }}</p>
+        <p v-if="loadingCountries" class="text-gray-500 text-sm mt-1">Loading countries...</p>
+      </div>
+
+      <div v-if="counties.length > 0">
+        <label for="holiday-county" class="block text-sm font-medium text-gray-700">Holiday County</label>
+        <select
+          id="holiday-county"
+          v-model="form.holidayCounty"
+          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm border p-2"
+        >
+          <option value="">Select a county (optional)</option>
+          <option v-for="county in counties" :key="county.countyCode" :value="county.countyCode">
+            {{ county.name }}
+          </option>
+        </select>
+        <p v-if="countyError" class="text-red-500 text-sm mt-1">{{ countyError }}</p>
+        <p v-if="loadingCounties" class="text-gray-500 text-sm mt-1">Loading counties...</p>
       </div>
 
       <div class="pt-4 flex justify-between items-center">
