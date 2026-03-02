@@ -24,17 +24,7 @@ With the rise of hybrid work, keeping track of the days you work from home is mo
 ### Key Features:
 - **Monthly Overview:** See a count of your WFH days directly in the monthly spreadsheet view.
 - **Interactive Calendar:** Click on the WFH column to open a calendar where you can toggle days on and off.
-- **Public Holiday Integration:** Configure a public holiday data source (JSON) to automatically highlight holidays in the calendar. Public holidays are visually distinct and cannot be selected as WFH days, ensuring your records are accurate. 
-    - See Australian public holidays by state: 
-      - https://prule.github.io/leave-planner/data/publichols/australia/act/{year}.json
-      - https://prule.github.io/leave-planner/data/publichols/australia/nsw/{year}.json
-      - https://prule.github.io/leave-planner/data/publichols/australia/nt/{year}.json
-      - https://prule.github.io/leave-planner/data/publichols/australia/qld/{year}.json
-      - https://prule.github.io/leave-planner/data/publichols/australia/sa/{year}.json
-      - https://prule.github.io/leave-planner/data/publichols/australia/tas/{year}.json
-      - https://prule.github.io/leave-planner/data/publichols/australia/vic/{year}.json
-      - https://prule.github.io/leave-planner/data/publichols/australia/wa/{year}.json
-      - **Please report any inaccuracies at https://github.com/prule/leave-planner/issues**
+- **Public Holiday Integration:** In the Settings page, you can now select your country to automatically fetch public holiday data from Nager.Date. Public holidays are highlighted in red and cannot be selected as WFH days. If your country has regional holidays, a county/state selector will appear, allowing you to see only the holidays relevant to you.
 - **Financial Year Summary:** At the end of each financial year (e.g., June), a summary row displays the total number of WFH days, making tax time a breeze.
 
 ## 🔄 Automatic PWA Reloading
