@@ -5,9 +5,13 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc -b && vite build",
+    "build": "npm run build:cf",
+    "build:cf": "vue-tsc -b && vite build --base=/",
+    "build:gh": "vue-tsc -b && vite build --base=/leave-planner/",
     "preview": "vite preview",
-    "deploy": "npm run build && gh-pages -d dist"
+    "deploy": "npm run deploy:cf && npm run deploy:gh",
+    "deploy:cf": "npm run build:cf && wrangler pages deploy dist",
+    "deploy:gh": "npm run build:gh && gh-pages -d dist"
   },
   "dependencies": {
     "chart.js": "^4.5.1",
@@ -27,7 +31,8 @@
     "vite": "^7.3.1",
     "vite-plugin-pwa": "^1.2.0",
     "vue-tsc": "^3.2.5",
-    "workbox-window": "^7.4.1"
+    "workbox-window": "^7.4.1",
+    "wrangler": "^4.112.0"
   },
   "packageManager": "pnpm@11.5.2+sha512.71c631e382066efc25625d5cf029075de07b61b37f6e27350fbd84b1bda5864c8c1967adc280776b45c30a715c0359a3be08fef42d5bb09e2b99029979692916"
 }
