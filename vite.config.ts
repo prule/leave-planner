@@ -36,6 +36,5 @@ export default defineConfig({
         dontCacheBustURLsMatching: /^assets\//,
       }
     })
-  ],
-  base: '/leave-planner/'
+  ]
 })
