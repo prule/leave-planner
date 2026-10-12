@@ -118,3 +118,8 @@ dist
 # IntelliJ
 .idea
 *.iml
+
+# Enforce pnpm: these must never be committed.
+package-lock.json
+yarn.lock
+npm-shrinkwrap.json
