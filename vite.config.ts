@@ -5,6 +5,9 @@ import { version } from './package.json'
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  // Own port so it never clashes with another project's dev server; the
+  // devvm reaches it as http://leave-planner.devvm through Caddy.
+  server: { port: 5185, strictPort: true, allowedHosts: ['.devvm'] },
   plugins: [
     vue(),
     VitePWA({
